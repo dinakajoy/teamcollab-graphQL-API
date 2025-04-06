@@ -9,6 +9,7 @@ const UserSchema = new mongoose.Schema({
     enum: ["ADMIN", "MANAGER", "MEMBER"],
     default: "MEMBER",
   },
+  refreshToken: { type: String },
 });
 
 const User = mongoose.model("User", UserSchema);

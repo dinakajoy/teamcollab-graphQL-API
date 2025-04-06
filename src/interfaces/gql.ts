@@ -1,7 +1,9 @@
-import { db } from "../db/index.js";
+import { Request, Response } from "express";
+import { IUser } from "./user.interface.js";
 
 export interface MyContext {
-  user?: { id: string; role: string };
-  db?: typeof db;
-  token?: string;
+  user: IUser | null;
+  req: Request;
+  res: Response;
+  // token?: string;
 }

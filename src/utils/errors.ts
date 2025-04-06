@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 export function WrongCredentialsException(this: any): void {
   this.status = 406;
-  this.error = 'Invalid credentials';
+  this.error = "Invalid credentials";
 }
 
 export function NotFoundUserException(this: any): void {

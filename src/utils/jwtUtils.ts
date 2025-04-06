@@ -1,7 +1,8 @@
 import config from "config";
 import jwt, { JwtPayload } from "jsonwebtoken";
-import logger from "../utils/logger";
-import { CustomException } from "./errors";
+import logger from "./logger.js";
+import { CustomException, ServerErrorException } from "./errors.js";
+import { ICreateToken, IVerifyToken } from "../interfaces/user.interface.js";
 
 const accessTokenSecret = config.get("jwt.accessTokenSecret") as string;
 const refreshTokenSecret = config.get("jwt.refreshTokenSecret") as string;
@@ -17,14 +18,14 @@ export const signPasswordAccessToken = (payload: {
       (err, token) => {
         if (err) {
           logger.error(`signAccessToken Error: ${err.message}`);
-          throw new (CustomException as any)(500, "Unsuccessful operation");
+          throw new (ServerErrorException as any)();
         }
         resolve(token);
       }
     );
   });
 
-export const signAccessToken = (payload): Promise<string | undefined> =>
+export const signToken = (payload: ICreateToken): Promise<string> =>
   new Promise((resolve, _) => {
     jwt.sign(
       { payload },
@@ -32,15 +33,15 @@ export const signAccessToken = (payload): Promise<string | undefined> =>
       { expiresIn: payload.isRefreshToken ? "7d" : "15m" },
       (err, token) => {
         if (err) {
-          logger.error(`signAccessToken Error: ${err.message}`);
-          throw new (CustomException as any)(500, "Unsuccessful operation");
+          logger.error(`signToken Error: ${err.message}`);
+          throw new (ServerErrorException as any)();
         }
-        resolve(token);
+        resolve(token as string);
       }
     );
   });
 
-export const verifyAccessToken = (tokenData): Promise<JwtPayload | undefined> =>
+export const verifyToken = (tokenData: IVerifyToken): Promise<JwtPayload> =>
   new Promise((resolve, _) => {
     try {
       const jwtRespone = jwt.verify(
@@ -49,7 +50,7 @@ export const verifyAccessToken = (tokenData): Promise<JwtPayload | undefined> =>
       ) as JwtPayload;
       resolve(jwtRespone);
     } catch (err: any) {
-      logger.error(`verifyAccessToken Error: ${err.message}`);
+      logger.error(`verifyToken Error: ${err.message}`);
       throw new (CustomException as any)(500, err.message);
     }
   });

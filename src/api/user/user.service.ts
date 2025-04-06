@@ -1,49 +1,102 @@
-import bcrypt from "bcryptjs/umd/types";
-import User from "../../models/User";
-import { signAccessToken } from "../../utils/jwtUtils";
+import { ObjectId } from "mongoose";
+import User from "../../models/user.js"
+import { CustomException } from "../../utils/errors.js"
+import logger from "../../utils/logger.js"
+import { IUser, roleEnum } from "../../interfaces/user.interface.js"
 
-export const getUsers = async () => {
+export const getUsers = async (): Promise<IUser[]> => {
   try {
-    return await User.find().lean();
-  } catch (error) {}
+    const users = await User.find()
+      .select(["-password", "-refreshToken"])
+      .lean<IUser[]>();
+    return users;
+  } catch (error) {
+    logger.error("Failed to fetch users:", error);
+    return [];
+  }
 };
 
-export const getUserById = async (id: string) => {
+export const getUserById = async (id: ObjectId): Promise<IUser | null> => {
   try {
-    return await User.findById(id).lean();
-  } catch (error) {}
+    return await User.findById(id).select("-password").lean<IUser>();
+  } catch (error) {
+    logger.error("Error getting user by ID:", error);
+    throw new (CustomException as any)(500, "Failed to get user by ID");
+  }
 };
 
-export const addUser = async ({ username, email, password }) => {
+export const getUserByEmail = async (email: string): Promise<IUser | null> => {
   try {
-    const existingUser = await User.findOne({ email });
-    if (existingUser) throw new Error("User already exists");
+    return await User.findOne({ email })
+      .select(["-password", "-refreshToken"])
+      .lean<IUser>();
+  } catch (error) {
+    logger.error("Error getting user by email:", error);
+    throw new (CustomException as any)(500, "Failed to get user by email");
+  }
+};
 
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const user = new User({ username, email, password: hashedPassword });
+export const addUser = async ({
+  name,
+  email,
+  password,
+}: {
+  name: string;
+  email: string;
+  password: string;
+}) => {
+  try {
+    const user = new User({ name, email, password });
     await user.save();
-
-    const token = signAccessToken(user);
-
-    return { ...user, id: user._id, token };
-  } catch (error) {}
+    return user.toObject();
+  } catch (error) {
+    logger.error("Error adding user:", error);
+    throw new (CustomException as any)(500, "Failed to add user");
+  }
 };
 
-export const updateUser = async ({ id, username, email, role }) => {
+export const updateUser = async ({
+  id,
+  name,
+  email,
+  role,
+  password,
+  refreshToken,
+}: {
+  id: ObjectId;
+  name: string;
+  email: string;
+  role: roleEnum;
+  password?: string;
+  refreshToken?: string;
+}) => {
   try {
     const updatedUser = await User.findByIdAndUpdate(
       id,
-      { username, email, role },
+      {
+        ...(name && { name }),
+        ...(email && { email }),
+        ...(role && { role }),
+        ...(password && { password }),
+        ...(refreshToken && { refreshToken }),
+      },
       { new: true }
     );
     if (updatedUser) {
       return await getUserById(id);
     }
-  } catch (error) {}
+    return null;
+  } catch (error) {
+    logger.error("Error updating user:", error);
+    throw new (CustomException as any)(500, "Failed to update user");
+  }
 };
 
-export const deleteUserById = async (id: string) => {
+export const deleteUserById = async (id: ObjectId) => {
   try {
     return await User.findByIdAndDelete(id);
-  } catch (error) {}
+  } catch (error) {
+    logger.error("Error deleting user:", error);
+    throw new (CustomException as any)(500, "Failed to delete user");
+  }
 };

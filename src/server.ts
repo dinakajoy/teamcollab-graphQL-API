@@ -6,8 +6,10 @@ import cookieParser from "cookie-parser";
 import { ApolloServer } from "@apollo/server";
 import { expressMiddleware } from "@apollo/server/express4";
 import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
-import { typeDefs, resolvers } from "./schema.js";
+import { applyMiddleware } from "graphql-middleware";
+import schema from "./schema.js";
 import { authMiddleware } from "./middlewares/auth.js";
+import { permissions } from "./middlewares/permissions.js";
 import { refreshTokenController } from "./api/auth/auth.controller.js";
 import connectDB from "./utils/dbConnect.js";
 import limiter from "./utils/rate-limiter.js";
@@ -22,9 +24,9 @@ async function startServer() {
   // Connect to MongoDB
   await connectDB();
 
+  const schemaWithPermissions = applyMiddleware(schema, permissions);
   const server = new ApolloServer<MyContext>({
-    typeDefs,
-    resolvers,
+    schema: schemaWithPermissions,
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
   });
   await server.start();

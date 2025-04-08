@@ -24,7 +24,7 @@ export const loginController = async (
       _id: user._id,
       role: user.role,
     };
-    const accessToken = await signToken({
+    const accessToken: string = await signToken({
       tokenInfo,
       isRefreshToken: false,
     });

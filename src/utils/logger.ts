@@ -3,7 +3,7 @@ import winston from "winston";
 const logger = winston.createLogger({
   level: "info",
   format: winston.format.json(),
-  defaultMeta: { service: "authentication-api" },
+  defaultMeta: { service: "team-collab-graphql-api" },
   transports: [
     //
     // - Write all logs with level `error` and below to `error.log`

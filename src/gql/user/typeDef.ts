@@ -9,6 +9,7 @@ export const userTypeDefs = `#graphql
     email: String!
     role: Role!
     token: String
+    team: Team!
   }
   
   type Query {

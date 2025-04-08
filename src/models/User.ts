@@ -1,12 +1,21 @@
-import mongoose from "mongoose";
+import mongoose, { ObjectId } from "mongoose";
+import { roleEnum } from "../interfaces/user.interface";
 
-const UserSchema = new mongoose.Schema({
+export interface UserDocument extends Document {
+  _id: ObjectId;
+  name: string;
+  email: string;
+  password: string;
+  role?: roleEnum;
+  refreshToken?: string;
+}
+
+const UserSchema = new mongoose.Schema<UserDocument>({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   role: {
     type: String,
-    enum: ["ADMIN", "MANAGER", "MEMBER"],
     default: "MEMBER",
   },
   refreshToken: { type: String },

@@ -1,13 +1,13 @@
-import { ObjectId } from "mongoose";
+import { Types } from "mongoose";
 
 export enum roleEnum {
-  "ADMIN",
-  "MANAGER",
-  "MEMBER",
+  ADMIN = "ADMIN",
+  MANAGER = "MANAGER",
+  MEMBER = "MEMBER",
 }
 
 export interface IUser {
-  _id: ObjectId;
+  _id: Types.ObjectId;
   name: string;
   email: string;
   role: roleEnum;
@@ -16,7 +16,7 @@ export interface IUser {
 }
 
 export interface IUserInfo {
-  _id: ObjectId;
+  _id: Types.ObjectId;
   role: roleEnum;
 }
 

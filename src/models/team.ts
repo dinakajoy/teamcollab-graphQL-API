@@ -1,11 +1,18 @@
-import mongoose from "mongoose";
-import User from "./user";
+import mongoose, { Schema, Types } from "mongoose";
 
-const TeamSchema = new mongoose.Schema({
+export interface TeamDocument extends Document {
+  _id: Types.ObjectId;
+  name: string;
+  description?: string;
+  members: Types.ObjectId[];
+}
+
+
+const TeamSchema = new mongoose.Schema<TeamDocument>({
   name: { type: String, required: true },
   description: { type: String, required: true },
-  members: [{ type: User }],
+  members: [{ type: Schema.Types.ObjectId, ref: 'User' }],
 });
 
-const Team = mongoose.model("Team", TeamSchema);
+const Team = mongoose.model<TeamDocument>("Team", TeamSchema);
 export default Team;

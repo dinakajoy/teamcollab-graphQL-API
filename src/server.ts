@@ -15,7 +15,8 @@ import connectDB from "./utils/dbConnect.js";
 import limiter from "./utils/rate-limiter.js";
 import logger from "./utils/logger.js";
 import corsOptions from "./utils/corsOptions.js";
-import { MyContext } from "./interfaces/gql.js";
+import { MyContext } from "./interfaces/context.js";
+import { createLoaders } from "./middlewares/dataloader.js";
 
 async function startServer() {
   const app = express();
@@ -43,7 +44,7 @@ async function startServer() {
     expressMiddleware<MyContext>(server, {
       context: async ({ req, res }) => {
         const user = await authMiddleware(req);
-        return { user, req, res };
+        return { user, req, res, loaders: createLoaders() };
       },
     })
   );

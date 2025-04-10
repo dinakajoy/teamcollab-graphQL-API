@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
-import { ObjectId } from "mongoose";
-import User from "../../models/user.js"
-import { signToken, verifyToken } from "../../utils/jwtUtils.js"
-import { compareStrings, hashString } from "../../utils/bcryptUtils.js"
-import logger from "../../utils/logger.js"
-import { CustomException } from "../../utils/errors.js"
-import { getUserById, updateUser } from "../user/user.service.js"
-import { IUser } from "../../interfaces/user.interface.js"
+import { Types } from "mongoose";
+import User from "../../models/user.js";
+import { signToken, verifyToken } from "../../utils/jwtUtils.js";
+import { compareStrings, hashString } from "../../utils/bcryptUtils.js";
+import logger from "../../utils/logger.js";
+import { CustomException } from "../../utils/errors.js";
+import { getUserById, updateUser } from "../user/user.service.js";
+import { IUser } from "../../interfaces/user.interface.js";
 
 export const loginController = async (
   res: Response,
@@ -57,7 +57,7 @@ export const loginController = async (
   }
 };
 
-export const logoutController = async (res: Response, id: ObjectId) => {
+export const logoutController = async (res: Response, id: Types.ObjectId) => {
   try {
     res.clearCookie("refresh_token", {
       path: "/refresh_token",

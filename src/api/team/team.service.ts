@@ -1,37 +1,9 @@
-import { ObjectId } from "mongoose";
+import { Types } from "mongoose";
 import Team from "../../models/team.js";
 import { CustomException } from "../../utils/errors.js";
 import logger from "../../utils/logger.js";
 import { ITeam } from "../../interfaces/team.interface.js";
 import { IUser } from "../../interfaces/user.interface.js";
-
-export const getTeams = async (): Promise<ITeam[]> => {
-  try {
-    const teams = await Team.find().lean<ITeam[]>();
-    return teams;
-  } catch (error) {
-    logger.error("Failed to fetch teams:", error);
-    return [];
-  }
-};
-
-export const getTeamById = async (id: ObjectId): Promise<ITeam | null> => {
-  try {
-    return await Team.findById(id).lean<ITeam>();
-  } catch (error) {
-    logger.error("Error getting team by ID:", error);
-    throw new (CustomException as any)(500, "Failed to get team by ID");
-  }
-};
-
-export const getTeamByName = async (name: string): Promise<ITeam | null> => {
-  try {
-    return await Team.findOne({ name }).select(["-members"]).lean<ITeam>();
-  } catch (error) {
-    logger.error("Error getting team by email:", error);
-    throw new (CustomException as any)(500, "Failed to get team by name");
-  }
-};
 
 export const createTeam = async ({
   name,
@@ -50,16 +22,46 @@ export const createTeam = async ({
   }
 };
 
+export const getTeams = async (): Promise<ITeam[]> => {
+  try {
+    const teams = await Team.find().lean<ITeam[]>();
+    return teams;
+  } catch (error) {
+    logger.error("Failed to fetch teams:", error);
+    return [];
+  }
+};
+
+export const getTeamById = async (
+  id: Types.ObjectId
+): Promise<ITeam | null> => {
+  try {
+    return await Team.findById(id).lean<ITeam>();
+  } catch (error) {
+    logger.error("Error getting team by ID:", error);
+    throw new (CustomException as any)(500, "Failed to get team by ID");
+  }
+};
+
+export const getTeamByName = async (name: string): Promise<ITeam | null> => {
+  try {
+    return await Team.findOne({ name }).select(["-members"]).lean<ITeam>();
+  } catch (error) {
+    logger.error("Error getting team by name:", error);
+    throw new (CustomException as any)(500, "Failed to get team by name");
+  }
+};
+
 export const updateTeam = async ({
   id,
   name,
   description,
   members,
 }: {
-  id: ObjectId;
+  id: Types.ObjectId;
   name: string;
   description: string;
-  members: IUser[];
+  members: Types.ObjectId[];
 }) => {
   try {
     const updatedTeam = await Team.findByIdAndUpdate(
@@ -81,7 +83,7 @@ export const updateTeam = async ({
   }
 };
 
-export const deleteTeamById = async (id: ObjectId) => {
+export const deleteTeamById = async (id: Types.ObjectId) => {
   try {
     return await Team.findByIdAndDelete(id);
   } catch (error) {

@@ -15,31 +15,25 @@ A GraphQL API for managing teams, projects, and tasks within an organization.
 ## Project Features
 
 1. User Authentication (JWT-based) ✅
+- Sign up, login, password reset and logout
+- Role-Based Access Control (admin, manager, member)
 
-- Sign up & login
-- Role-based access control (admin, manager, member)
-
-2. Teams & Members Management
-
+2. Teams & Members Management ✅
 - Create teams
 - Assign members to teams
 - Fetch team details efficiently (Dataloader)
 
 3. Project & Task Management
-
 - Create projects
-- ssign team members to projects
+- Assign team members to projects
 - Create tasks under projects
 
 4. Optimized Queries with Dataloader + Redis
-
 - Prevent duplicate DB calls for fetching team members
 - Cache frequently accessed data in Redis
 
-5. Security with GraphQL Shield
-
+5. Security with GraphQL Shield ✅
 - Protect sensitive queries & mutations based on roles
 
 6. Performance Monitoring
-
 - Track API performance using Prometheus & Grafana

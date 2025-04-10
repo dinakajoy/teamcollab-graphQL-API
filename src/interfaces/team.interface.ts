@@ -1,9 +1,8 @@
-import { ObjectId } from "mongoose";
-import { IUser } from "./user.interface";
+import { Types } from "mongoose";
 
 export interface ITeam {
-  _id: ObjectId;
+  _id: Types.ObjectId;
   name: string;
   descripyion: string;
-  members: IUser[];
+  members: Types.ObjectId[];
 }

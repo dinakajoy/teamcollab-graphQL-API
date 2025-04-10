@@ -1,15 +1,15 @@
-import { ObjectId } from "mongoose";
-import { checkRole } from "../../middlewares/auth.js"
+import { Types } from "mongoose";
+import { checkRole } from "../../middlewares/auth.js";
 import {
   addUserController,
   deleteUserController,
   getUserController,
   getUsersController,
   updateUserController,
-} from "../../api/user/user.controller.js"
-import { NotFoundUserException } from "../../utils/errors.js"
-import { roleEnum } from "../../interfaces/user.interface.js"
-import { MyContext } from "../../interfaces/gql.js"
+} from "../../api/user/user.controller.js";
+import { NotFoundUserException } from "../../utils/errors.js";
+import { roleEnum } from "../../interfaces/user.interface.js";
+import { MyContext } from "../../interfaces/context.js";
 
 export const userResolver = {
   Query: {
@@ -20,7 +20,7 @@ export const userResolver = {
     },
     user: async (
       _parent: unknown,
-      args: { id: ObjectId },
+      args: { id: Types.ObjectId },
       context: MyContext
     ) => {
       const { user } = context;
@@ -49,7 +49,7 @@ export const userResolver = {
 
     updateUser: async (
       _parent: unknown,
-      args: { id: ObjectId; name: string; email: string; role: roleEnum },
+      args: { id: Types.ObjectId; name: string; email: string; role: roleEnum },
       context: MyContext
     ) => {
       if (!context.user) throw new Error(NotFoundUserException as any);
@@ -60,12 +60,21 @@ export const userResolver = {
 
     deleteUser: async (
       _parent: unknown,
-      args: { id: ObjectId },
+      args: { id: Types.ObjectId },
       context: MyContext
     ) => {
       if (!context.user) throw new Error(NotFoundUserException as any);
       checkRole(context.user, [roleEnum.ADMIN]);
       return await deleteUserController(args.id);
+    },
+  },
+  User: {
+    teams: async (
+      user: { teams: [Types.ObjectId] },
+      _: any,
+      { loaders }: any
+    ) => {
+      return await loaders.teamLoader.loadMany(user.teams);
     },
   },
 };

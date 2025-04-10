@@ -1,12 +1,14 @@
-import DataLoader from "dataloader";
 import { createClient } from "redis";
-import User from "../models/user.js"
+import createUserLoader from "../gql/user/user.dataloader.js";
+import createTeamLoader from "../gql/team/team.dataloader.js";
+import createProjectLoader from "../gql/project/project.dataloader.js";
+import createTaskLoader from "../gql/task/task.dataloader.js";
 
 export const createLoaders = () =>
   // redisClient: ReturnType<typeof createClient>
   ({
-    // userLoader: new DataLoader(async (userIds: string[]) => {
-    //   const users = await User.find({ _id: { $in: userIds } });
-    //   return userIds.map((id) => users.find((user) => user.id === id) || null);
-    // }),
+    userLoader: createUserLoader(),
+    teamLoader: createTeamLoader(),
+    projectLoader: createProjectLoader(),
+    taskLoader: createTaskLoader(),
   });

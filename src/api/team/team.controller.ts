@@ -1,4 +1,4 @@
-import { ObjectId } from "mongoose";
+import { Types } from "mongoose";
 import {
   getTeams,
   getTeamById,
@@ -7,12 +7,26 @@ import {
   updateTeam,
   deleteTeamById,
 } from "./team.service.js";
-import {
-  AlreadyExistingUserException,
-  CustomException,
-} from "../../utils/errors.js";
+import { CustomException } from "../../utils/errors.js";
 import logger from "../../utils/logger.js";
 import { IUser } from "../../interfaces/user.interface.js";
+
+export const createTeamController = async (
+  name: string,
+  description: string
+) => {
+  try {
+    const existingTeam = await getTeamByName(name);
+    if (existingTeam)
+      throw new (CustomException as any)(400, "Team already exists!");
+
+    await createTeam({ name, description });
+    return "Team registered successfully";
+  } catch (error) {
+    logger.error("createTeamController - Error adding team:", error);
+    throw new (CustomException as any)(500, "Failed to add team");
+  }
+};
 
 export const getTeamsController = async () => {
   try {
@@ -23,7 +37,7 @@ export const getTeamsController = async () => {
   }
 };
 
-export const getTeamController = async (id: ObjectId) => {
+export const getTeamController = async (id: Types.ObjectId) => {
   try {
     return await getTeamById(id);
   } catch (error) {
@@ -32,24 +46,11 @@ export const getTeamController = async (id: ObjectId) => {
   }
 };
 
-export const createTeamController = async (name: string, description: string) => {
-  try {
-    const existingTeam = await getTeamByName(name);
-    if (existingTeam) throw new (AlreadyExistingUserException as any)();
-
-    await createTeam({ name, description });
-    return "Team registered successfully";
-  } catch (error) {
-    logger.error("addTeamController - Error adding team:", error);
-    throw new (CustomException as any)(500, "Failed to add team");
-  }
-};
-
 export const updateTeamController = async (
-  id: ObjectId,
+  id: Types.ObjectId,
   name: string,
   description: string,
-  members: IUser[]
+  members: Types.ObjectId[]
 ) => {
   try {
     const existingTeam = await getTeamById(id);
@@ -64,7 +65,7 @@ export const updateTeamController = async (
   }
 };
 
-export const deleteTeamController = async (id: ObjectId) => {
+export const deleteTeamController = async (id: Types.ObjectId) => {
   try {
     const existingTeam = await getTeamById(id);
     if (!existingTeam) throw new Error("Team don't exist");

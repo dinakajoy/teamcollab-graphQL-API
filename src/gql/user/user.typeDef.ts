@@ -1,6 +1,8 @@
 export const userTypeDefs = `#graphql
   enum Role {
-    ADMIN, MANAGER, MEMBER
+    ADMIN
+    MANAGER
+    MEMBER
   }
 
   type User {
@@ -9,7 +11,7 @@ export const userTypeDefs = `#graphql
     email: String!
     role: Role!
     token: String
-    team: Team!
+    teams: Team!
   }
   
   type Query {
@@ -20,7 +22,7 @@ export const userTypeDefs = `#graphql
 
   type Mutation {
     addUser(name: String!, email: String!, password: String!): User
-    updateUser(id: ID!, name: String, email: String, password: String, role: Role): User
+    updateUser(userId: ID!, name: String, email: String, password: String, role: Role): User
     deleteUser(id: ID!): String
   }
 `;

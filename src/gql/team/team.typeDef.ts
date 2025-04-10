@@ -13,7 +13,7 @@ export const teamTypeDefs = `#graphql
 
   type Mutation {
     createTeam(name: String!, description: String!): Team!
-    updateTeam(id: ID!, name: String, description: String, members: String): Team!
+    updateTeam(id: ID!, name: String, description: String, membersId: [ID!]!): Team!
     deleteTeam(id: ID!): String
   }
 `;

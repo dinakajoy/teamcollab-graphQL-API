@@ -1,8 +1,8 @@
-import mongoose, { ObjectId } from "mongoose";
+import mongoose, { Types } from "mongoose";
 import { roleEnum } from "../interfaces/user.interface";
 
 export interface UserDocument extends Document {
-  _id: ObjectId;
+  _id: Types.ObjectId;
   name: string;
   email: string;
   password: string;
@@ -16,6 +16,7 @@ const UserSchema = new mongoose.Schema<UserDocument>({
   password: { type: String, required: true },
   role: {
     type: String,
+    enum: Object.values(roleEnum),
     default: "MEMBER",
   },
   refreshToken: { type: String },

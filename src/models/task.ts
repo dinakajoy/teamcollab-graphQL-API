@@ -7,6 +7,7 @@ export enum TaskStatusEnum {
 }
 
 export interface TaskDocument extends Document {
+  _id: Types.ObjectId;
   title: string;
   description?: string;
   assignedTo?: Types.ObjectId;

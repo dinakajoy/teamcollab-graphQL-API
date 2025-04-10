@@ -73,7 +73,7 @@ export const projectResolver = {
       return await deleteProjectController(args.id);
     },
   },
-  Task: {
+  Project: {
     members: async (
       project: { members: [Types.ObjectId] },
       _: any,
@@ -88,7 +88,7 @@ export const projectResolver = {
     ) => {
       return await loaders.teamLoader.loadMany(project.team);
     },
-    task: async (
+    tasks: async (
       project: { tasks: [Types.ObjectId] },
       _: any,
       { loaders }: any

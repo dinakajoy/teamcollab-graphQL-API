@@ -1,6 +1,7 @@
 import mongoose, { Schema, Types, Document } from "mongoose";
 
 export interface ProjectDocument extends Document {
+  _id: Types.ObjectId;
   name: string;
   description?: string;
   team: Types.ObjectId;

@@ -68,7 +68,7 @@ export const updateUser = async ({
   id: Types.ObjectId;
   name: string;
   email: string;
-  role: roleEnum;
+  role?: roleEnum;
   password?: string;
   refreshToken?: string;
 }) => {

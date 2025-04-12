@@ -6,7 +6,7 @@ import { compareStrings, hashString } from "../../utils/bcryptUtils.js";
 import logger from "../../utils/logger.js";
 import { CustomException } from "../../utils/errors.js";
 import { getUserById, updateUser } from "../user/user.service.js";
-import { IUser } from "../../interfaces/user.interface.js";
+import { roleEnum } from "../../interfaces/user.interface.js";
 
 export const loginController = async (
   res: Response,
@@ -14,7 +14,7 @@ export const loginController = async (
   password: string
 ) => {
   try {
-    const user: IUser | null = await User.findOne({ email });
+    const user = await User.findOne({ email }).lean();
     if (!user || !user.password) throw new Error("User not found");
 
     const validPassword = await compareStrings(password, user.password);
@@ -22,9 +22,9 @@ export const loginController = async (
 
     const tokenInfo = {
       _id: user._id,
-      role: user.role,
+      role: user.role || roleEnum.MEMBER,
     };
-    const accessToken: string = await signToken({
+    const accessToken = await signToken({
       tokenInfo,
       isRefreshToken: false,
     });
@@ -49,7 +49,6 @@ export const loginController = async (
     });
 
     delete (user as any).password;
-
     return { ...user, token: accessToken };
   } catch (error) {
     logger.error("loginController - Login error:", error);

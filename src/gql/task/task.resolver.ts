@@ -13,10 +13,14 @@ import { TaskStatusEnum } from "../../models/task.js";
 
 export const taskResolver = {
   Query: {
-    tasks: async (_parent: unknown, _args: unknown, context: MyContext) => {
+    tasks: async (
+      _parent: unknown,
+      args: { projectId: Types.ObjectId },
+      context: MyContext
+    ) => {
       if (!context.user) throw new Error(NotFoundUserException as any);
       checkRole(context.user, [roleEnum.ADMIN]);
-      return await getTasksController();
+      return await getTasksController(args.projectId);
     },
     task: async (
       _parent: unknown,

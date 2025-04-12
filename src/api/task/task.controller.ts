@@ -30,9 +30,9 @@ export const createTaskController = async (
   }
 };
 
-export const getTasksController = async () => {
+export const getTasksController = async (projectId: Types.ObjectId) => {
   try {
-    return await getTasks();
+    return await getTasks(projectId);
   } catch (error) {
     logger.error("getTasksController - Failed to fetch tasks:", error);
     return [];

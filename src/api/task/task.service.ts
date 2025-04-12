@@ -26,9 +26,9 @@ export const createTask = async ({
   }
 };
 
-export const getTasks = async (): Promise<ITask[]> => {
+export const getTasks = async (projectId: Types.ObjectId): Promise<ITask[]> => {
   try {
-    const tasks = await Task.find().lean<ITask[]>();
+    const tasks = await Task.find({ projectId }).lean<ITask[]>();
     return tasks;
   } catch (error) {
     logger.error("Failed to fetch tasks:", error);

@@ -31,7 +31,7 @@ export interface IVerifyToken {
 }
 
 export interface IDecodedToken {
-  payload: IUserInfo;
+  tokenInfo: IUserInfo;
   iat: number;
   exp: number;
 }

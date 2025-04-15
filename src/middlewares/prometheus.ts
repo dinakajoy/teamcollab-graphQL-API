@@ -14,7 +14,7 @@ export const setupMonitoring = (app: Application) => {
   app.use(
     prometheusMiddleware({
       metricsPath: "/metrics",
-      collectDefaultMetrics: false, // Already called manually above
+      collectDefaultMetrics: false,
     })
   );
 };

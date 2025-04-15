@@ -52,7 +52,7 @@ export const loginController = async (
     return { ...user, token: accessToken };
   } catch (error) {
     logger.error("loginController - Login error:", error);
-    throw new (CustomException as any)(500, "Failed to login");
+    throw new CustomException(500, "Failed to login");
   }
 };
 
@@ -70,7 +70,7 @@ export const logoutController = async (res: Response, id: Types.ObjectId) => {
     return "Logged out successfully";
   } catch (error) {
     logger.error("logoutController - Logout error:", error);
-    throw new (CustomException as any)(500, "Failed to logout");
+    throw new CustomException(500, "Failed to logout");
   }
 };
 

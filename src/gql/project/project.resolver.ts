@@ -13,18 +13,18 @@ import { MyContext } from "../../interfaces/context.js";
 export const projectResolver = {
   Query: {
     projects: async (_parent: unknown, _args: unknown, context: MyContext) => {
-      if (!context.user) throw new Error(NotFoundUserException as any);
+      if (!context.user) throw new NotFoundUserException();
       checkRole(context.user, [roleEnum.ADMIN]);
       return await getProjectsController();
     },
     project: async (
       _parent: unknown,
-      args: { id: Types.ObjectId },
+      args: { projectId: Types.ObjectId },
       { user, loaders }: MyContext
     ) => {
-      if (!user) throw new Error(NotFoundUserException as any);
-      checkRole(user, [roleEnum.ADMIN, roleEnum.MEMBER]);
-      return loaders.projectLoader.load(args.id);
+      if (!user) throw new NotFoundUserException();
+      checkRole(user, [roleEnum.ADMIN, roleEnum.MANAGER]);
+      return loaders.projectLoader.load(args.projectId);
     },
   },
 
@@ -34,8 +34,8 @@ export const projectResolver = {
       args: { name: string; description: string; teamId: Types.ObjectId },
       context: MyContext
     ) => {
-      if (!context.user) throw new Error(NotFoundUserException as any);
-      checkRole(context.user, [roleEnum.ADMIN]);
+      if (!context.user) throw new NotFoundUserException();
+      checkRole(context.user, [roleEnum.ADMIN, roleEnum.MANAGER]);
       const { name, description, teamId } = args;
       return await createProjectController(name, description, teamId);
     },
@@ -43,7 +43,7 @@ export const projectResolver = {
     updateProject: async (
       _parent: unknown,
       args: {
-        id: Types.ObjectId;
+        projectId: Types.ObjectId;
         name: string;
         description: string;
         teamId: Types.ObjectId;
@@ -51,11 +51,11 @@ export const projectResolver = {
       },
       context: MyContext
     ) => {
-      if (!context.user) throw new Error(NotFoundUserException as any);
-      checkRole(context.user, [roleEnum.ADMIN]);
-      const { id, name, description, teamId, membersId } = args;
+      if (!context.user) throw new NotFoundUserException();
+      checkRole(context.user, [roleEnum.ADMIN, roleEnum.MANAGER]);
+      const { projectId, name, description, teamId, membersId } = args;
       return await updateProjectController(
-        id,
+        projectId,
         name,
         description,
         teamId,
@@ -65,34 +65,33 @@ export const projectResolver = {
 
     deleteProject: async (
       _parent: unknown,
-      args: { id: Types.ObjectId },
+      args: { projectId: Types.ObjectId },
       context: MyContext
     ) => {
-      if (!context.user) throw new Error(NotFoundUserException as any);
+      if (!context.user) throw new NotFoundUserException();
       checkRole(context.user, [roleEnum.ADMIN]);
-      return await deleteProjectController(args.id);
+      return await deleteProjectController(args.projectId);
     },
   },
   Project: {
-    members: async (
-      project: { members: [Types.ObjectId] },
-      _: any,
-      { loaders }: any
-    ) => {
-      return await loaders.userLoader.loadMany(project.members);
-    },
     team: async (
-      project: { team: [Types.ObjectId] },
+      project: { team?: Types.ObjectId[] },
       _: any,
       { loaders }: any
     ) => {
+      if (!project.team || project.team.length === 0) {
+        return [];
+      }
       return await loaders.teamLoader.loadMany(project.team);
     },
     tasks: async (
-      project: { tasks: [Types.ObjectId] },
+      project: { tasks?: Types.ObjectId[] },
       _: any,
       { loaders }: any
     ) => {
+      if (!project.tasks || project.tasks.length === 0) {
+        return [];
+      }
       return await loaders.taskLoader.loadMany(project.tasks);
     },
   },

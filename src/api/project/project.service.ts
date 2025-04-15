@@ -19,7 +19,7 @@ export const createProject = async ({
     return project.toObject();
   } catch (error) {
     logger.error("Error adding project:", error);
-    throw new (CustomException as any)(500, "Failed to add project");
+    throw new CustomException(500, "Failed to add project");
   }
 };
 
@@ -40,7 +40,7 @@ export const getProjectById = async (
     return await Project.findById(id).lean<IProject>();
   } catch (error) {
     logger.error("Error getting project by ID:", error);
-    throw new (CustomException as any)(500, "Failed to get project by ID");
+    throw new CustomException(500, "Failed to get project by ID");
   }
 };
 
@@ -53,7 +53,7 @@ export const getProjectByName = async (
       .lean<IProject>();
   } catch (error) {
     logger.error("Error getting project by name:", error);
-    throw new (CustomException as any)(500, "Failed to get project by name");
+    throw new CustomException(500, "Failed to get project by name");
   }
 };
 
@@ -87,7 +87,7 @@ export const updateProject = async ({
     return null;
   } catch (error) {
     logger.error("Error updating project:", error);
-    throw new (CustomException as any)(500, "Failed to update project");
+    throw new CustomException(500, "Failed to update project");
   }
 };
 
@@ -96,6 +96,6 @@ export const deleteProjectById = async (id: Types.ObjectId) => {
     return await Project.findByIdAndDelete(id);
   } catch (error) {
     logger.error("Error deleting project:", error);
-    throw new (CustomException as any)(500, "Failed to delete project");
+    throw new CustomException(500, "Failed to delete project");
   }
 };

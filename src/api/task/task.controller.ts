@@ -14,19 +14,16 @@ import { TaskStatusEnum } from "../../interfaces/task.interface";
 export const createTaskController = async (
   title: string,
   description: string,
-  assignedTo: Types.ObjectId,
   project: Types.ObjectId
 ) => {
   try {
     const existingTask = await getTaskByTitle(title);
-    if (existingTask)
-      throw new (CustomException as any)(400, "Task already exists!");
+    if (existingTask) throw new CustomException(400, "Task already exists!");
 
-    await createTask({ title, description, assignedTo, project });
-    return "Task registered successfully";
+    return await createTask({ title, description, project });
   } catch (error) {
     logger.error("addTaskController - Error adding task:", error);
-    throw new (CustomException as any)(500, "Failed to add task");
+    throw new CustomException(500, "Failed to add task");
   }
 };
 
@@ -44,7 +41,7 @@ export const getTaskController = async (id: Types.ObjectId) => {
     return await getTaskById(id);
   } catch (error) {
     logger.error("getTaskController - Error getting task:", error);
-    throw new (CustomException as any)(500, "Failed to get task");
+    throw new CustomException(500, "Failed to get task");
   }
 };
 
@@ -52,7 +49,6 @@ export const updateTaskController = async (
   id: Types.ObjectId,
   title: string,
   description: string,
-  assignedTo: Types.ObjectId,
   status: TaskStatusEnum,
   project: Types.ObjectId
 ) => {
@@ -64,7 +60,6 @@ export const updateTaskController = async (
       id,
       title,
       description,
-      assignedTo,
       status,
       project,
     });
@@ -72,7 +67,7 @@ export const updateTaskController = async (
     return task;
   } catch (error) {
     logger.error("updateTaskController - Error updating task:", error);
-    throw new (CustomException as any)(500, "Failed to update task");
+    throw new CustomException(500, "Failed to update task");
   }
 };
 
@@ -86,6 +81,6 @@ export const deleteTaskController = async (id: Types.ObjectId) => {
     return "Task deleted successfully";
   } catch (error) {
     logger.error("deleteTaskController - Error deleting task:", error);
-    throw new (CustomException as any)(500, "Failed to delete task");
+    throw new CustomException(500, "Failed to delete task");
   }
 };

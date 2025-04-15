@@ -9,7 +9,6 @@ import {
 } from "./team.service.js";
 import { CustomException } from "../../utils/errors.js";
 import logger from "../../utils/logger.js";
-import { IUser } from "../../interfaces/user.interface.js";
 
 export const createTeamController = async (
   name: string,
@@ -17,14 +16,12 @@ export const createTeamController = async (
 ) => {
   try {
     const existingTeam = await getTeamByName(name);
-    if (existingTeam)
-      throw new (CustomException as any)(400, "Team already exists!");
+    if (existingTeam) throw new CustomException(400, "Team already exists!");
 
-    await createTeam({ name, description });
-    return "Team registered successfully";
+    return await createTeam({ name, description });
   } catch (error) {
     logger.error("createTeamController - Error adding team:", error);
-    throw new (CustomException as any)(500, "Failed to add team");
+    throw new CustomException(500, "Failed to add team");
   }
 };
 
@@ -42,7 +39,7 @@ export const getTeamController = async (id: Types.ObjectId) => {
     return await getTeamById(id);
   } catch (error) {
     logger.error("getTeamController - Error getting team:", error);
-    throw new (CustomException as any)(500, "Failed to get team");
+    throw new CustomException(500, "Failed to get team");
   }
 };
 
@@ -61,7 +58,7 @@ export const updateTeamController = async (
     return team;
   } catch (error) {
     logger.error("updateTeamController - Error updating team:", error);
-    throw new (CustomException as any)(500, "Failed to update team");
+    throw new CustomException(500, "Failed to update team");
   }
 };
 
@@ -75,6 +72,6 @@ export const deleteTeamController = async (id: Types.ObjectId) => {
     return "Team deleted successfully";
   } catch (error) {
     logger.error("deleteTeamController - Error deleting team:", error);
-    throw new (CustomException as any)(500, "Failed to delete team");
+    throw new CustomException(500, "Failed to delete team");
   }
 };

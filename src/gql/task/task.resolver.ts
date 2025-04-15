@@ -7,7 +7,7 @@ import {
   updateTaskController,
 } from "../../api/task/task.controller.js";
 import { NotFoundUserException } from "../../utils/errors.js";
-import { IUser, roleEnum } from "../../interfaces/user.interface.js";
+import { roleEnum } from "../../interfaces/user.interface.js";
 import { MyContext } from "../../interfaces/context.js";
 import { TaskStatusEnum } from "../../models/task.js";
 
@@ -18,18 +18,18 @@ export const taskResolver = {
       args: { projectId: Types.ObjectId },
       context: MyContext
     ) => {
-      if (!context.user) throw new Error(NotFoundUserException as any);
+      if (!context.user) throw new NotFoundUserException();
       checkRole(context.user, [roleEnum.ADMIN]);
       return await getTasksController(args.projectId);
     },
     task: async (
       _parent: unknown,
-      args: { id: Types.ObjectId },
+      args: { taskId: Types.ObjectId },
       { user, loaders }: MyContext
     ) => {
-      if (!user) throw new Error(NotFoundUserException as any);
-      checkRole(user, [roleEnum.ADMIN, roleEnum.MEMBER]);
-      return loaders.taskLoader.load(args.id);
+      if (!user) throw new NotFoundUserException();
+      checkRole(user, [roleEnum.ADMIN, roleEnum.MANAGER]);
+      return loaders.taskLoader.load(args.taskId);
     },
   },
 
@@ -39,42 +39,34 @@ export const taskResolver = {
       args: {
         title: string;
         description: string;
-        assignedTo: Types.ObjectId;
         projectId: Types.ObjectId;
       },
       context: MyContext
     ) => {
-      if (!context.user) throw new Error(NotFoundUserException as any);
-      checkRole(context.user, [roleEnum.ADMIN]);
-      const { title, description, assignedTo, projectId } = args;
-      return await createTaskController(
-        title,
-        description,
-        assignedTo,
-        projectId
-      );
+      if (!context.user) throw new NotFoundUserException();
+      checkRole(context.user, [roleEnum.ADMIN, roleEnum.MANAGER]);
+      const { title, description, projectId } = args;
+      return await createTaskController(title, description, projectId);
     },
 
     updateTask: async (
       _parent: unknown,
       args: {
-        id: Types.ObjectId;
+        taskId: Types.ObjectId;
         title: string;
         description: string;
-        assignedTo: Types.ObjectId;
         status: TaskStatusEnum;
         projectId: Types.ObjectId;
       },
       context: MyContext
     ) => {
-      if (!context.user) throw new Error(NotFoundUserException as any);
-      checkRole(context.user, [roleEnum.ADMIN]);
-      const { id, title, description, assignedTo, status, projectId } = args;
+      if (!context.user) throw new NotFoundUserException();
+      checkRole(context.user, [roleEnum.ADMIN, roleEnum.MANAGER]);
+      const { taskId, title, description, status, projectId } = args;
       return await updateTaskController(
-        id,
+        taskId,
         title,
         description,
-        assignedTo,
         status,
         projectId
       );
@@ -82,28 +74,24 @@ export const taskResolver = {
 
     deleteTask: async (
       _parent: unknown,
-      args: { id: Types.ObjectId },
+      args: { taskId: Types.ObjectId },
       context: MyContext
     ) => {
-      if (!context.user) throw new Error(NotFoundUserException as any);
+      if (!context.user) throw new NotFoundUserException();
       checkRole(context.user, [roleEnum.ADMIN]);
-      return await deleteTaskController(args.id);
+      return await deleteTaskController(args.taskId);
     },
   },
   Task: {
-    assignedTo: async (
-      assignedTo: Types.ObjectId,
-      _: any,
-      { loaders }: any
-    ) => {
-      return await loaders.userLoader.loadMany([assignedTo]);
-    },
     project: async (
-      task: { project: [Types.ObjectId] },
+      task: { project?: Types.ObjectId },
       _: any,
       { loaders }: any
     ) => {
-      return await loaders.projectLoader.loadMany(task.project);
+      if (!task.project) {
+        return null;
+      }
+      return await loaders.projectLoader.load(task.project);
     },
   },
 };

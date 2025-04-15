@@ -11,7 +11,7 @@ export const hashString = (string: string) =>
       bcrypt.hash(string, salt as string, (error, hash) => {
         if (error) {
           logger.error(error.message);
-          throw new (ServerErrorException as any)();
+          throw new ServerErrorException();
         }
         resolve(hash as string);
       });
@@ -23,7 +23,7 @@ export const compareStrings = (string: string, hashedString: string) =>
     bcrypt.compare(string, hashedString, (err, res) => {
       if (err) {
         logger.error(err.message);
-        throw new (ServerErrorException as any)();
+        throw new ServerErrorException();
       }
       resolve(res);
     });

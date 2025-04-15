@@ -13,18 +13,18 @@ import { MyContext } from "../../interfaces/context.js";
 export const teamResolver = {
   Query: {
     teams: async (_parent: unknown, _args: unknown, context: MyContext) => {
-      if (!context.user) throw new Error(NotFoundUserException as any);
+      if (!context.user) throw new NotFoundUserException();
       checkRole(context.user, [roleEnum.ADMIN]);
       return await getTeamsController();
     },
     team: async (
       _parent: unknown,
-      args: { id: Types.ObjectId },
+      args: { teamId: Types.ObjectId },
       { user, loaders }: MyContext
     ) => {
-      if (!user) throw new Error(NotFoundUserException as any);
-      checkRole(user, [roleEnum.ADMIN, roleEnum.MEMBER]);
-      return loaders.teamLoader.load(args.id);
+      if (!user) throw new NotFoundUserException();
+      checkRole(user, [roleEnum.ADMIN]);
+      return loaders.teamLoader.load(args.teamId);
     },
   },
 
@@ -34,7 +34,7 @@ export const teamResolver = {
       args: { name: string; description: string },
       context: MyContext
     ) => {
-      if (!context.user) throw new Error(NotFoundUserException as any);
+      if (!context.user) throw new NotFoundUserException();
       checkRole(context.user, [roleEnum.ADMIN]);
       const { name, description } = args;
       return await createTeamController(name, description);
@@ -43,36 +43,49 @@ export const teamResolver = {
     updateTeam: async (
       _parent: unknown,
       args: {
-        id: Types.ObjectId;
+        teamId: Types.ObjectId;
         name: string;
         description: string;
         membersId: Types.ObjectId[];
       },
       context: MyContext
     ) => {
-      if (!context.user) throw new Error(NotFoundUserException as any);
+      if (!context.user) throw new NotFoundUserException();
       checkRole(context.user, [roleEnum.ADMIN]);
-      const { id, name, description, membersId } = args;
-      return await updateTeamController(id, name, description, membersId);
+      const { teamId, name, description, membersId } = args;
+      return await updateTeamController(teamId, name, description, membersId);
     },
 
     deleteTeam: async (
       _parent: unknown,
-      args: { id: Types.ObjectId },
+      args: { teamId: Types.ObjectId },
       context: MyContext
     ) => {
-      if (!context.user) throw new Error(NotFoundUserException as any);
+      if (!context.user) throw new NotFoundUserException();
       checkRole(context.user, [roleEnum.ADMIN]);
-      return await deleteTeamController(args.id);
+      return await deleteTeamController(args.teamId);
     },
   },
   Team: {
     members: async (
-      team: { members: [Types.ObjectId] },
+      team: { members?: Types.ObjectId[] },
       _: any,
       { loaders }: any
     ) => {
+      if (!team.members || team.members.length === 0) {
+        return [];
+      }
       return await loaders.userLoader.loadMany(team.members);
+    },
+    projects: async (
+      team: { projects?: Types.ObjectId[] },
+      _: any,
+      { loaders }: any
+    ) => {
+      if (!team.projects || team.projects.length === 0) {
+        return [];
+      }
+      return await loaders.projectLoader.loadMany(team.projects);
     },
   },
 };

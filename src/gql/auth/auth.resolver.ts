@@ -22,7 +22,7 @@ export const authResolver = {
     },
 
     logout: async (_parent: unknown, _args: unknown, context: MyContext) => {
-      if (!context.user) throw new Error(NotFoundUserException as any);
+      if (!context.user) throw new NotFoundUserException();
       return await logoutController(context.res, context.user._id);
     },
   },

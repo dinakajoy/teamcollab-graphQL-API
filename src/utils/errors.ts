@@ -1,34 +1,45 @@
-/* eslint-disable no-unused-vars */
-export function WrongCredentialsException(this: any): void {
-  this.status = 406;
-  this.error = "Invalid credentials";
+export class CustomException extends Error {
+  status: number;
+
+  constructor(statusCode: number, message: string) {
+    super(message);
+    this.status = statusCode;
+    this.name = "CustomException";
+  }
 }
 
-export function NotFoundUserException(this: any): void {
-  this.status = 403;
-  this.error = "Please login or create an account";
+export class WrongCredentialsException extends CustomException {
+  constructor() {
+    super(406, "Invalid credentials");
+  }
 }
 
-export function UnauthorizedUserException(this: any): void {
-  this.status = 401;
-  this.error = "You are not authorized";
+export class NotFoundUserException extends CustomException {
+  constructor() {
+    super(403, "Please login or create an account");
+  }
 }
 
-export function ServerErrorException(this: any): void {
-  this.status = 500;
-  this.error = "Operation unsuccessful";
+export class UnauthorizedUserException extends CustomException {
+  constructor() {
+    super(401, "You are not authorized");
+  }
 }
 
-export function AlreadyExistingUserException(this: any): void {
-  this.status = 400;
-  this.error = "User already exists";
+export class ServerErrorException extends CustomException {
+  constructor() {
+    super(500, "Operation unsuccessful");
+  }
 }
 
-export function CustomException(
-  this: any,
-  code: number,
-  message: string
-): void {
-  this.status = code;
-  this.error = message;
+export class AlreadyExistingUserException extends CustomException {
+  constructor() {
+    super(400, "User already exists");
+  }
+}
+
+export class RateLimitExceededException extends CustomException {
+  constructor() {
+    super(429, "Too many access attempts, please try again after 15 minutes");
+  }
 }

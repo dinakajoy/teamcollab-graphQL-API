@@ -19,7 +19,7 @@ export const addUser = async ({
     return user.toObject();
   } catch (error) {
     logger.error("Error adding user:", error);
-    throw new (CustomException as any)(500, "Failed to add user");
+    throw new CustomException(500, "Failed to add user");
   }
 };
 
@@ -28,10 +28,11 @@ export const getUsers = async (): Promise<IUser[]> => {
     const users = await User.find()
       .select(["-password", "-refreshToken"])
       .lean<IUser[]>();
+
     return users;
   } catch (error) {
     logger.error("Failed to fetch users:", error);
-    return [];
+    throw new CustomException(500, "Failed to fetch users");
   }
 };
 
@@ -42,7 +43,7 @@ export const getUserById = async (
     return await User.findById(id).select("-password").lean<IUser>();
   } catch (error) {
     logger.error("Error getting user by ID:", error);
-    throw new (CustomException as any)(500, "Failed to get user by ID");
+    throw new CustomException(500, "Failed to get user by ID");
   }
 };
 
@@ -53,7 +54,7 @@ export const getUserByEmail = async (email: string): Promise<IUser | null> => {
       .lean<IUser>();
   } catch (error) {
     logger.error("Error getting user by email:", error);
-    throw new (CustomException as any)(500, "Failed to get user by email");
+    throw new CustomException(500, "Failed to get user by email");
   }
 };
 
@@ -90,7 +91,7 @@ export const updateUser = async ({
     return null;
   } catch (error) {
     logger.error("Error updating user:", error);
-    throw new (CustomException as any)(500, "Failed to update user");
+    throw new CustomException(500, "Failed to update user");
   }
 };
 
@@ -99,6 +100,6 @@ export const deleteUserById = async (id: Types.ObjectId) => {
     return await User.findByIdAndDelete(id);
   } catch (error) {
     logger.error("Error deleting user:", error);
-    throw new (CustomException as any)(500, "Failed to delete user");
+    throw new CustomException(500, "Failed to delete user");
   }
 };

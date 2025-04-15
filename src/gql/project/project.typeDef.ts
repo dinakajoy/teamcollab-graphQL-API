@@ -1,21 +1,20 @@
 export const projectTypeDefs = `#graphql
   type Project {
-    id: ID!
+    _id: ID!
     name: String!
     description: String
-    team: Team!
-    members: [User!]!
-    tasks: [Task!]!
+    team: [Team]
+    tasks: [Task]
   }
 
   type Query {
     projects: [Project!]!
-    project(id: ID!): Project
+    project(projectId: ID!): Project
   }
 
   type Mutation {
-    createProject(name: String!, description: String, teamId: ID!): Project!
-    updateProject(id: ID!, name: String!, description: String, teamId: ID!, membersId: [ID!]!): Project!
-    deleteProject(id: ID!): String
+    createProject(name: String!, description: String, teamId: [ID!]): Project!
+    updateProject(projectId: ID!, name: String!, description: String, teamId: [ID!]): Project!
+    deleteProject(projectId: ID!): String
   }
 `;

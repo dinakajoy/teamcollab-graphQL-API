@@ -10,7 +10,6 @@ export interface ITask {
   _id: Types.ObjectId;
   title: string;
   description?: string;
-  assignedTo?: Types.ObjectId;
   status: TaskStatusEnum;
   project: Types.ObjectId;
 }

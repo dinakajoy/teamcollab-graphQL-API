@@ -8,21 +8,19 @@ import { IUser } from "../../interfaces/user.interface.js";
 export const createTask = async ({
   title,
   description,
-  assignedTo,
   project,
 }: {
   title: string;
   description: string;
-  assignedTo: Types.ObjectId;
   project: Types.ObjectId;
 }) => {
   try {
-    const task = new Task({ title, description, assignedTo, project });
+    const task = new Task({ title, description, project });
     await task.save();
     return task.toObject();
   } catch (error) {
     logger.error("Error adding task:", error);
-    throw new (CustomException as any)(500, "Failed to add task");
+    throw new CustomException(500, "Failed to add task");
   }
 };
 
@@ -43,7 +41,7 @@ export const getTaskById = async (
     return await Task.findById(id).lean<ITask>();
   } catch (error) {
     logger.error("Error getting task by ID:", error);
-    throw new (CustomException as any)(500, "Failed to get task by ID");
+    throw new CustomException(500, "Failed to get task by ID");
   }
 };
 
@@ -52,7 +50,7 @@ export const getTaskByTitle = async (name: string): Promise<ITask | null> => {
     return await Task.findOne({ name }).select(["-members"]).lean<ITask>();
   } catch (error) {
     logger.error("Error getting task by title:", error);
-    throw new (CustomException as any)(500, "Failed to get task by title");
+    throw new CustomException(500, "Failed to get task by title");
   }
 };
 
@@ -60,14 +58,12 @@ export const updateTask = async ({
   id,
   title,
   description,
-  assignedTo,
   status,
   project,
 }: {
   id: Types.ObjectId;
   title: string;
   description: string;
-  assignedTo: Types.ObjectId;
   status: TaskStatusEnum;
   project: Types.ObjectId;
 }) => {
@@ -77,7 +73,6 @@ export const updateTask = async ({
       {
         ...(title && { title }),
         ...(description && { description }),
-        ...(assignedTo && { assignedTo }),
         ...(status && { status }),
         ...(project && { project }),
       },
@@ -89,7 +84,7 @@ export const updateTask = async ({
     return null;
   } catch (error) {
     logger.error("Error updating task:", error);
-    throw new (CustomException as any)(500, "Failed to update task");
+    throw new CustomException(500, "Failed to update task");
   }
 };
 
@@ -98,6 +93,6 @@ export const deleteTaskById = async (id: Types.ObjectId) => {
     return await Task.findByIdAndDelete(id);
   } catch (error) {
     logger.error("Error deleting task:", error);
-    throw new (CustomException as any)(500, "Failed to delete task");
+    throw new CustomException(500, "Failed to delete task");
   }
 };

@@ -20,6 +20,10 @@ export interface IUserInfo {
   role: roleEnum;
 }
 
+export interface ITokenInfo {
+  tokenInfo: IUserInfo;
+}
+
 export interface ICreateToken {
   tokenInfo: IUserInfo;
   isRefreshToken: boolean;
@@ -31,7 +35,7 @@ export interface IVerifyToken {
 }
 
 export interface IDecodedToken {
-  tokenInfo: IUserInfo;
+  payload: ICreateToken;
   iat: number;
   exp: number;
 }

@@ -1,10 +1,41 @@
-# TeamCollab API
+# TeamCollab – GraphQL API
 
-A GraphQL API for managing teams, projects, and tasks within an organization.
+**TeamCollab** is a collaborative project and task management API built with **Node.js**, **TypeScript**, **GraphQL**, **MongoDB**, and **DataLoader**. It supports scalable team structures, project tracking, and efficient task management using modern best practices.
 
-## This project will showcase expertise in GraphQL API development using:
+## Features
 
-- Express.js → Server framework
+### User Authentication (JWT-based)
+
+- Sign up, login, password reset and logout
+- Role-Based Access Control (admin, manager, member)
+
+### Teams & Members Management
+
+- Create teams
+- Assign multiple users to one or more teams
+- Efficiently fetch user’s teams and team members with DataLoader
+
+### Project & Task Management
+
+- Create projects and assign them to multiple teams
+- Create tasks under specific projects
+- Assign tasks to a project
+
+### Developer Friendly
+
+- Built with `TypeScript` and `Apollo Server`
+- Modular and layered architecture (Resolvers, Controllers, Services)
+- Efficient batching and caching using `DataLoader`
+- Clean error handling with custom exception classes
+- Middleware for authentication and rate-limiting
+- CORS setup for frontend integration
+- Security with GraphQL Shield
+- Performance Monitoring using Prometheus & Grafana
+
+## Tech Stack
+
+- Node.js - Server runtime
+- Express.js → Server framework (Middleware and HTTP server)
 - TypeScript → Type safety & maintainability
 - Mongoose → Database management (MongoDB)
 - Apollo Server → GraphQL API server
@@ -12,28 +43,67 @@ A GraphQL API for managing teams, projects, and tasks within an organization.
 - Dataloader + Redis → Caching & query optimization
 - Prometheus + Grafana → Performance monitoring
 
-## Project Features
+## Installation
 
-1. User Authentication (JWT-based) ✅
-- Sign up, login, password reset and logout
-- Role-Based Access Control (admin, manager, member)
+```bash
+git clone https://github.com/dinakajoy/team-collab-graphql-api.git
+cd team-collab-graphql-api
+npm install
+```
 
-2. Teams & Members Management ✅
-- Create teams
-- Assign members to teams
-- Fetch team details efficiently (Dataloader)
+## Environment Variables
 
-3. Project & Task Management
-- Create projects
-- Assign team members to projects
-- Create tasks under projects
+Create a `.env` file with the following:
 
-4. Optimized Queries with Dataloader + Redis
-- Prevent duplicate DB calls for fetching team members
-- Cache frequently accessed data in Redis
+```env
+PORT=4000
+HOST=http://localhost
+SALTWORKFACTOR=
+DATABASE_URL=
+ACCESS_TOKEN_SECRET=
+REFRESH_TOKEN_SECRET=
+```
 
-5. Security with GraphQL Shield ✅
-- Protect sensitive queries & mutations based on roles
+## Running the Server
 
-6. Performance Monitoring
-- Track API performance using Prometheus & Grafana
+```bash
+npm start
+```
+
+GraphQL Playground: [http://localhost:4000/graphql](http://localhost:4000/graphql)
+
+---
+
+## Sample Queries
+
+```graphql
+# Get all users
+query {
+  users {
+    name
+    email
+    teams {
+      name
+    }
+  }
+}
+```
+
+```graphql
+# Get team details
+query {
+  team(teamId: "team_id") {
+    name
+    members {
+      name
+    }
+  }
+}
+```
+
+## Security
+
+- JWT-based access control
+- Refresh token flow for session persistence
+- Rate limiting to prevent abuse
+- CORS policy for frontend apps

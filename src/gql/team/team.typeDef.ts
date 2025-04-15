@@ -1,19 +1,20 @@
 export const teamTypeDefs = `#graphql
   type Team {
-    id: ID!
+    _id: ID!
     name: String!
     description: String
-    members: [User!]!
+    members: [User]
+    projects: [Project]
   }
   
   type Query {
     teams: [Team!]!
-    team(id: ID!): Team
+    team(teamId: ID!): Team
   }
 
   type Mutation {
     createTeam(name: String!, description: String!): Team!
-    updateTeam(id: ID!, name: String, description: String, membersId: [ID!]!): Team!
-    deleteTeam(id: ID!): String
+    updateTeam(teamId: ID!, name: String, description: String, membersId: [ID!]!): Team!
+    deleteTeam(teamId: ID!): String
   }
 `;

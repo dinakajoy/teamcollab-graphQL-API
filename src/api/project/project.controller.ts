@@ -18,13 +18,12 @@ export const createProjectController = async (
   try {
     const existingProject = await getProjectByName(name);
     if (existingProject)
-      throw new (CustomException as any)(400, "Project already exists!");
+      throw new CustomException(400, "Project already exists!");
 
-    await createProject({ name, description, team });
-    return "Project registered successfully";
+    return await createProject({ name, description, team });
   } catch (error) {
     logger.error("addProjectController - Error adding project:", error);
-    throw new (CustomException as any)(500, "Failed to add project");
+    throw new CustomException(500, "Failed to add project");
   }
 };
 
@@ -42,7 +41,7 @@ export const getProjectmController = async (id: Types.ObjectId) => {
     return await getProjectById(id);
   } catch (error) {
     logger.error("getProjectController - Error getting project:", error);
-    throw new (CustomException as any)(500, "Failed to get project");
+    throw new CustomException(500, "Failed to get project");
   }
 };
 
@@ -57,12 +56,18 @@ export const updateProjectController = async (
     const existingProject = await getProjectById(id);
     if (!existingProject) throw new Error("Project don't exist");
 
-    const project = await updateProject({ id, name, description, team, members });
+    const project = await updateProject({
+      id,
+      name,
+      description,
+      team,
+      members,
+    });
 
     return project;
   } catch (error) {
     logger.error("updateProjectController - Error updating project:", error);
-    throw new (CustomException as any)(500, "Failed to update project");
+    throw new CustomException(500, "Failed to update project");
   }
 };
 
@@ -76,6 +81,6 @@ export const deleteProjectController = async (id: Types.ObjectId) => {
     return "Project deleted successfully";
   } catch (error) {
     logger.error("deleteProjectController - Error deleting project:", error);
-    throw new (CustomException as any)(500, "Failed to delete project");
+    throw new CustomException(500, "Failed to delete project");
   }
 };

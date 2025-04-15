@@ -18,7 +18,7 @@ export const createTeam = async ({
     return team.toObject();
   } catch (error) {
     logger.error("Error adding team:", error);
-    throw new (CustomException as any)(500, "Failed to add team");
+    throw new CustomException(500, "Failed to add team");
   }
 };
 
@@ -39,7 +39,7 @@ export const getTeamById = async (
     return await Team.findById(id).lean<ITeam>();
   } catch (error) {
     logger.error("Error getting team by ID:", error);
-    throw new (CustomException as any)(500, "Failed to get team by ID");
+    throw new CustomException(500, "Failed to get team by ID");
   }
 };
 
@@ -48,7 +48,7 @@ export const getTeamByName = async (name: string): Promise<ITeam | null> => {
     return await Team.findOne({ name }).select(["-members"]).lean<ITeam>();
   } catch (error) {
     logger.error("Error getting team by name:", error);
-    throw new (CustomException as any)(500, "Failed to get team by name");
+    throw new CustomException(500, "Failed to get team by name");
   }
 };
 
@@ -79,7 +79,7 @@ export const updateTeam = async ({
     return null;
   } catch (error) {
     logger.error("Error updating team:", error);
-    throw new (CustomException as any)(500, "Failed to update team");
+    throw new CustomException(500, "Failed to update team");
   }
 };
 
@@ -88,6 +88,6 @@ export const deleteTeamById = async (id: Types.ObjectId) => {
     return await Team.findByIdAndDelete(id);
   } catch (error) {
     logger.error("Error deleting team:", error);
-    throw new (CustomException as any)(500, "Failed to delete team");
+    throw new CustomException(500, "Failed to delete team");
   }
 };

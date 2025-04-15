@@ -1,6 +1,6 @@
 export const authTypeDefs = `#graphql
-  type User {
-    id: ID!
+  type LoggedinUser {
+    _id: ID!
     name: String!
     email: String!
     role: Role!
@@ -8,7 +8,7 @@ export const authTypeDefs = `#graphql
   }
 
   type Mutation {
-    login(email: String!, password: String!): User
+    login(email: String!, password: String!): LoggedinUser
     logout: String
   }
 `;

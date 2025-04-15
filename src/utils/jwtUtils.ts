@@ -18,7 +18,7 @@ export const signPasswordAccessToken = (payload: {
       (err, token) => {
         if (err) {
           logger.error(`signAccessToken Error: ${err.message}`);
-          throw new (ServerErrorException as any)();
+          throw new ServerErrorException();
         }
         resolve(token);
       }
@@ -30,11 +30,11 @@ export const signToken = (payload: ICreateToken): Promise<string> =>
     jwt.sign(
       { payload },
       payload.isRefreshToken ? refreshTokenSecret : accessTokenSecret,
-      { expiresIn: payload.isRefreshToken ? "7d" : "15m" },
+      { expiresIn: payload.isRefreshToken ? "7d" : "1d" },
       (err, token) => {
         if (err) {
           logger.error(`signToken Error: ${err.message}`);
-          throw new (ServerErrorException as any)();
+          throw new ServerErrorException();
         }
         resolve(token as string);
       }
@@ -51,6 +51,6 @@ export const verifyToken = (tokenData: IVerifyToken): Promise<JwtPayload> =>
       resolve(jwtRespone);
     } catch (err: any) {
       logger.error(`verifyToken Error: ${err.message}`);
-      throw new (CustomException as any)(500, err.message);
+      throw new CustomException(500, err.message);
     }
   });

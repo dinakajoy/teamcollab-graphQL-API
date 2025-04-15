@@ -22,15 +22,13 @@ export const addUserController = async (
 ) => {
   try {
     const existingUser = await getUserByEmail(email);
-    if (existingUser) throw new (AlreadyExistingUserException as any)();
+    if (existingUser) throw new AlreadyExistingUserException();
 
     const hashedPassword = await hashString(password);
-    await addUser({ name, email, password: hashedPassword });
-
-    return "User registered successfully";
+    return await addUser({ name, email, password: hashedPassword });
   } catch (error) {
     logger.error("addUserController - Error adding user:", error);
-    throw new (CustomException as any)(500, "Failed to add user");
+    throw new CustomException(500, "Failed to add user");
   }
 };
 
@@ -39,7 +37,7 @@ export const getUsersController = async () => {
     return await getUsers();
   } catch (error) {
     logger.error("getUsersController - Failed to fetch users:", error);
-    return [];
+    throw new CustomException(500, "Failed to fetch users");
   }
 };
 
@@ -48,7 +46,7 @@ export const getUserController = async (id: Types.ObjectId) => {
     return await getUserById(id);
   } catch (error) {
     logger.error("getUserController - Error getting user:", error);
-    throw new (CustomException as any)(500, "Failed to get user");
+    throw new CustomException(500, "Failed to get user");
   }
 };
 
@@ -67,7 +65,7 @@ export const updateUserController = async (
     return user;
   } catch (error) {
     logger.error("updateUserController - Error updating user:", error);
-    throw new (CustomException as any)(500, "Failed to update user");
+    throw new CustomException(500, "Failed to update user");
   }
 };
 
@@ -81,6 +79,6 @@ export const deleteUserController = async (id: Types.ObjectId) => {
     return "User deleted successfully";
   } catch (error) {
     logger.error("deleteUserController - Error deleting user:", error);
-    throw new (CustomException as any)(500, "Failed to delete user");
+    throw new CustomException(500, "Failed to delete user");
   }
 };

@@ -6,22 +6,21 @@ export const taskTypeDefs = `#graphql
   }
 
   type Task {
-    id: ID!
+    _id: ID!
     title: String!
     description: String
-    assignedTo: User
     status: TaskStatus!
-    project: Project!
+    project: Project
   }
 
  type Query {
     tasks(projectId: ID!): [Task!]!
-    task(id: ID!): Task!
+    task(taskId: ID!): Task!
   }
 
   type Mutation {
     createTask(projectId: ID!, title: String!, description: String, assignedTo: ID): Task!
-    updateTask(id: ID!, projectId: ID!, title: String!, description: String, assignedTo: ID, status: TaskStatus!): Task!
-    deleteTask(id: ID!): String
+    updateTask(taskId: ID!, projectId: ID!, title: String!, description: String, status: TaskStatus!): Task!
+    deleteTask(taskId: ID!): String
   }
 `;

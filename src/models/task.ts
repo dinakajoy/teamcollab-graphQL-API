@@ -10,7 +10,6 @@ export interface TaskDocument extends Document {
   _id: Types.ObjectId;
   title: string;
   description?: string;
-  assignedTo?: Types.ObjectId;
   status: TaskStatusEnum;
   project: Types.ObjectId;
 }
@@ -19,7 +18,6 @@ const TaskSchema = new Schema<TaskDocument>(
   {
     title: { type: String, required: true },
     description: { type: String },
-    assignedTo: { type: Schema.Types.ObjectId, ref: "User" },
     status: {
       type: String,
       enum: Object.values(TaskStatusEnum),

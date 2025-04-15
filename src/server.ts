@@ -10,16 +10,18 @@ import { applyMiddleware } from "graphql-middleware";
 import schema from "./schema.js";
 import { authMiddleware } from "./middlewares/auth.js";
 import { permissions } from "./middlewares/permissions.js";
+import { createLoaders } from "./middlewares/dataloader.js";
+import { setupMonitoring } from "./middlewares/prometheus.js";
 import { refreshTokenController } from "./api/auth/auth.controller.js";
 import connectDB from "./utils/dbConnect.js";
 import limiter from "./utils/rate-limiter.js";
 import logger from "./utils/logger.js";
 import corsOptions from "./utils/corsOptions.js";
 import { MyContext } from "./interfaces/context.js";
-import { createLoaders } from "./middlewares/dataloader.js";
 
 async function startServer() {
   const app = express();
+  setupMonitoring(app);
   const httpServer = http.createServer(app);
 
   // Connect to MongoDB
@@ -28,6 +30,7 @@ async function startServer() {
   const schemaWithPermissions = applyMiddleware(schema, permissions);
   const server = new ApolloServer<MyContext>({
     schema: schemaWithPermissions,
+    introspection: process.env.NODE_ENV !== "production",
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
   });
   await server.start();
@@ -44,6 +47,7 @@ async function startServer() {
     expressMiddleware<MyContext>(server, {
       context: async ({ req, res }) => {
         const user = await authMiddleware(req);
+
         return { user, req, res, loaders: createLoaders() };
       },
     })

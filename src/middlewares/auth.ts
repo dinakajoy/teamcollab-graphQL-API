@@ -1,16 +1,16 @@
 import { Request } from "express";
-import { getUserById } from "../api/user/user.service.js";
-import { verifyToken } from "../utils/jwtUtils.js";
+import { getUserById } from "../api/user/user.service";
+import { verifyToken } from "../utils/jwtUtils";
 import {
   NotFoundUserException,
   UnauthorizedUserException,
-} from "../utils/errors.js";
+} from "../utils/errors";
 import {
   IDecodedToken,
   IUser,
   roleEnum,
-} from "../interfaces/user.interface.js";
-import logger from "../utils/logger.js";
+} from "../interfaces/user.interface";
+import logger from "../utils/logger";
 
 export const authMiddleware = async (req: Request) => {
   const authHeader = req.headers.authorization;

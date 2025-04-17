@@ -1,8 +1,8 @@
 import config from "config";
 import jwt, { JwtPayload } from "jsonwebtoken";
-import logger from "./logger.js";
-import { CustomException, ServerErrorException } from "./errors.js";
-import { ICreateToken, IVerifyToken } from "../interfaces/user.interface.js";
+import logger from "./logger";
+import { CustomException, ServerErrorException } from "./errors";
+import { ICreateToken, IVerifyToken } from "../interfaces/user.interface";
 
 const accessTokenSecret = config.get("jwt.accessTokenSecret") as string;
 const refreshTokenSecret = config.get("jwt.refreshTokenSecret") as string;

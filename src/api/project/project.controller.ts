@@ -6,9 +6,9 @@ import {
   getProjectByName,
   updateProject,
   deleteProjectById,
-} from "./project.service.js";
-import { CustomException } from "../../utils/errors.js";
-import logger from "../../utils/logger.js";
+} from "./project.service";
+import { CustomException } from "../../utils/errors";
+import logger from "../../utils/logger";
 
 export const createProjectController = async (
   name: string,

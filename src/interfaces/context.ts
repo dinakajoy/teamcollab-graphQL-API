@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
-import { IUser } from "./user.interface.js";
+import { IUser } from "./user.interface";
 import { Types } from "mongoose";
 import DataLoader from "dataloader";
 import { UserDocument } from "../models/user";
 import { TeamDocument } from "../models/team";
-import { ProjectDocument } from "../models/project.js";
-import { TaskDocument } from "../models/task.js";
+import { ProjectDocument } from "../models/project";
+import { TaskDocument } from "../models/task";
 
 export interface DataLoaders {
   userLoader: DataLoader<Types.ObjectId, UserDocument | null>;

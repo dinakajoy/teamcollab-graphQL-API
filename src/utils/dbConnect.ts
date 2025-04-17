@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import config from "config";
-import logger from "./logger.js";
+import logger from "./logger";
 
 const connectDB = async () => {
   const dbURL = config.get("dbConfig.url") as string;

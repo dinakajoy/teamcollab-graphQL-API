@@ -7,8 +7,8 @@ import {
   updateTask,
   deleteTaskById,
 } from "./task.service";
-import { CustomException } from "../../utils/errors.js";
-import logger from "../../utils/logger.js";
+import { CustomException } from "../../utils/errors";
+import logger from "../../utils/logger";
 import { TaskStatusEnum } from "../../interfaces/task.interface";
 
 export const createTaskController = async (

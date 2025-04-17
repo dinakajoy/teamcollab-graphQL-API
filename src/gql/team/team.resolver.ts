@@ -1,14 +1,14 @@
 import { Types } from "mongoose";
-import { checkRole } from "../../middlewares/auth.js";
+import { checkRole } from "../../middlewares/auth";
 import {
   createTeamController,
   deleteTeamController,
   getTeamsController,
   updateTeamController,
-} from "../../api/team/team.controller.js";
-import { NotFoundUserException } from "../../utils/errors.js";
-import { roleEnum } from "../../interfaces/user.interface.js";
-import { MyContext } from "../../interfaces/context.js";
+} from "../../api/team/team.controller";
+import { NotFoundUserException } from "../../utils/errors";
+import { roleEnum } from "../../interfaces/user.interface";
+import { MyContext } from "../../interfaces/context";
 
 export const teamResolver = {
   Query: {

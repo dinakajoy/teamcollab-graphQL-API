@@ -1,9 +1,9 @@
 import {
   loginController,
   logoutController,
-} from "../../api/auth/auth.controller.js";
-import { NotFoundUserException } from "../../utils/errors.js";
-import { MyContext } from "../../interfaces/context.js";
+} from "../../api/auth/auth.controller";
+import { NotFoundUserException } from "../../utils/errors";
+import { MyContext } from "../../interfaces/context";
 
 export const authResolver = {
   Mutation: {

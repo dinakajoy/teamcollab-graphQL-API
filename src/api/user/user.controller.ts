@@ -6,14 +6,14 @@ import {
   getUserByEmail,
   updateUser,
   deleteUserById,
-} from "./user.service.js";
-import { hashString } from "../../utils/bcryptUtils.js";
+} from "./user.service";
+import { hashString } from "../../utils/bcryptUtils";
 import {
   AlreadyExistingUserException,
   CustomException,
-} from "../../utils/errors.js";
-import logger from "../../utils/logger.js";
-import { roleEnum } from "../../interfaces/user.interface.js";
+} from "../../utils/errors";
+import logger from "../../utils/logger";
+import { roleEnum } from "../../interfaces/user.interface";
 
 export const addUserController = async (
   name: string,

@@ -1,8 +1,8 @@
 import { Types } from "mongoose";
-import User from "../../models/user.js";
-import { CustomException } from "../../utils/errors.js";
-import logger from "../../utils/logger.js";
-import { IUser, roleEnum } from "../../interfaces/user.interface.js";
+import User from "../../models/user";
+import { CustomException } from "../../utils/errors";
+import logger from "../../utils/logger";
+import { IUser, roleEnum } from "../../interfaces/user.interface";
 
 export const addUser = async ({
   name,

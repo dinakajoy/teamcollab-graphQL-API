@@ -1,9 +1,9 @@
 import { Types } from "mongoose";
-import Task from "../../models/task.js";
-import { CustomException } from "../../utils/errors.js";
-import logger from "../../utils/logger.js";
-import { ITask, TaskStatusEnum } from "../../interfaces/task.interface.js";
-import { IUser } from "../../interfaces/user.interface.js";
+import Task from "../../models/task";
+import { CustomException } from "../../utils/errors";
+import logger from "../../utils/logger";
+import { ITask, TaskStatusEnum } from "../../interfaces/task.interface";
+import { IUser } from "../../interfaces/user.interface";
 
 export const createTask = async ({
   title,

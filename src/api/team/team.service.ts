@@ -1,9 +1,9 @@
 import { Types } from "mongoose";
-import Team from "../../models/team.js";
-import { CustomException } from "../../utils/errors.js";
-import logger from "../../utils/logger.js";
-import { ITeam } from "../../interfaces/team.interface.js";
-import { IUser } from "../../interfaces/user.interface.js";
+import Team from "../../models/team";
+import { CustomException } from "../../utils/errors";
+import logger from "../../utils/logger";
+import { ITeam } from "../../interfaces/team.interface";
+import { IUser } from "../../interfaces/user.interface";
 
 export const createTeam = async ({
   name,

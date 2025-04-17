@@ -1,5 +1,5 @@
 import { rule, shield, allow, and } from "graphql-shield";
-import { roleEnum } from "../interfaces/user.interface.js";
+import { roleEnum } from "../interfaces/user.interface";
 
 const isAuthenticated = rule()(async (_, __, { user }) => !!user);
 const isAdmin = rule()(

@@ -1,15 +1,15 @@
 import { Types } from "mongoose";
-import { checkRole } from "../../middlewares/auth.js";
+import { checkRole } from "../../middlewares/auth";
 import {
   addUserController,
   deleteUserController,
   getUserController,
   getUsersController,
   updateUserController,
-} from "../../api/user/user.controller.js";
-import { NotFoundUserException } from "../../utils/errors.js";
-import { roleEnum } from "../../interfaces/user.interface.js";
-import { MyContext } from "../../interfaces/context.js";
+} from "../../api/user/user.controller";
+import { NotFoundUserException } from "../../utils/errors";
+import { roleEnum } from "../../interfaces/user.interface";
+import { MyContext } from "../../interfaces/context";
 
 export const userResolver = {
   Query: {

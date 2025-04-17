@@ -1,7 +1,7 @@
-import createUserLoader from "../gql/user/user.dataloader.js";
-import createTeamLoader from "../gql/team/team.dataloader.js";
-import createProjectLoader from "../gql/project/project.dataloader.js";
-import createTaskLoader from "../gql/task/task.dataloader.js";
+import createUserLoader from "../gql/user/user.dataloader";
+import createTeamLoader from "../gql/team/team.dataloader";
+import createProjectLoader from "../gql/project/project.dataloader";
+import createTaskLoader from "../gql/task/task.dataloader";
 
 export const createLoaders = () =>
   ({

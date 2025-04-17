@@ -1,6 +1,9 @@
 import mongoose from "mongoose";
 import config from "config";
 import logger from "./logger";
+import dotenv from "dotenv-safe";
+
+dotenv.config();
 
 const connectDB = async () => {
   const dbURL = config.get("dbConfig.url") as string;

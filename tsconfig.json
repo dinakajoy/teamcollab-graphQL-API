@@ -9,7 +9,8 @@
     "rootDir": "src",
     "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "moduleSuffixes": [".js", ".ts"]
+    "moduleSuffixes": [".js", ".ts"],
+    "types": ["node"]
   },
   "include": ["config/**/*.ts", "src/**/*.ts"],
   "exclude": ["node_modules", "dist"]

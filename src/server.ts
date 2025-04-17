@@ -1,7 +1,8 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import http from "http";
 import cors from "cors";
 import config from "config";
+import dotenv from "dotenv-safe";
 import cookieParser from "cookie-parser";
 import { ApolloServer } from "@apollo/server";
 import { expressMiddleware } from "@apollo/server/express4";
@@ -18,6 +19,8 @@ import limiter from "./utils/rate-limiter";
 import logger from "./utils/logger";
 import corsOptions from "./utils/corsOptions";
 import { MyContext } from "./interfaces/context";
+
+dotenv.config();
 
 async function startServer() {
   const app = express();
@@ -45,7 +48,7 @@ async function startServer() {
     cors(corsOptions),
     express.json(),
     expressMiddleware<MyContext>(server, {
-      context: async ({ req, res }) => {
+      context: async ({ req, res }: { req: Request; res: Response }) => {
         const user = await authMiddleware(req);
 
         return { user, req, res, loaders: createLoaders() };

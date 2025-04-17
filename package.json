@@ -8,7 +8,8 @@
     "generate-schema": "ts-node ./src/gql/generateSchema.ts",
     "generate": "npm run generate-schema && graphql-codegen --config codegen.yml",
     "compile": "npm run generate && tsc",
-    "start": "npm run compile && node ./dist/src/server.js"
+    "build": "npm run compile",
+    "start": "node ./dist/src/server.js"
   },
   "keywords": [],
   "author": "",

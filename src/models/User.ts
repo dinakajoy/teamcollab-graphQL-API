@@ -1,4 +1,4 @@
-import mongoose, { Types } from "mongoose";
+import mongoose, { Document, Types } from "mongoose";
 import { roleEnum } from "../interfaces/user.interface";
 
 export interface UserDocument extends Document {
@@ -17,7 +17,7 @@ const UserSchema = new mongoose.Schema<UserDocument>({
   role: {
     type: String,
     enum: Object.values(roleEnum),
-    default: "MEMBER",
+    default: roleEnum.MEMBER,
   },
   refreshToken: { type: String },
 });

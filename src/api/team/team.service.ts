@@ -3,7 +3,6 @@ import Team from "../../models/team";
 import { CustomException } from "../../utils/errors";
 import logger from "../../utils/logger";
 import { ITeam } from "../../interfaces/team.interface";
-import { IUser } from "../../interfaces/user.interface";
 
 export const createTeam = async ({
   name,

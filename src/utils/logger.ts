@@ -1,4 +1,7 @@
 import winston from "winston";
+import dotenv from "dotenv-safe";
+
+dotenv.config();
 
 const logger = winston.createLogger({
   level: "info",

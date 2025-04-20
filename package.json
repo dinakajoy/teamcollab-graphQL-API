@@ -2,17 +2,19 @@
   "name": "teamcollab-api",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
-  "type": "commonjs",
+  "main": "src/server.ts",
   "scripts": {
-    "generate-schema": "ts-node ./src/gql/generateSchema.ts",
+    "compile": "tsc",
+    "generate-schema": "node ./dist/src/gql/generateSchema.js",
     "generate": "npm run generate-schema && graphql-codegen --config codegen.yml",
-    "compile": "npm run generate && tsc",
-    "build": "npm run compile",
+    "build": "npm run compile && npm run generate",
     "start": "node ./dist/src/server.js"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "Team Collab",
+    "GraphQL API"
+  ],
+  "author": "Odinaka Joy",
   "license": "ISC",
   "dependencies": {
     "@apollo/server": "^4.11.3",

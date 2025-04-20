@@ -1,5 +1,5 @@
 import { CorsOptions } from "cors";
-import logger from "./logger";
+import logger from "./logger.js";
 
 const allowedOrigins = [
   "http://127.0.0.1:5000",

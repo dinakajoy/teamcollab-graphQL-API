@@ -2,10 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.permissions = void 0;
 const graphql_shield_1 = require("graphql-shield");
-const user_interface_1 = require("../interfaces/user.interface");
+const user_interface_js_1 = require("../interfaces/user.interface.js");
 const isAuthenticated = (0, graphql_shield_1.rule)()(async (_, __, { user }) => !!user);
-const isAdmin = (0, graphql_shield_1.rule)()(async (_, __, { user }) => user?.role === user_interface_1.roleEnum.ADMIN);
-const isManager = (0, graphql_shield_1.rule)()(async (_, __, { user }) => user?.role === user_interface_1.roleEnum.MANAGER);
+const isAdmin = (0, graphql_shield_1.rule)()(async (_, __, { user }) => user?.role === user_interface_js_1.roleEnum.ADMIN);
+const isManager = (0, graphql_shield_1.rule)()(async (_, __, { user }) => user?.role === user_interface_js_1.roleEnum.MANAGER);
 exports.permissions = (0, graphql_shield_1.shield)({
     Query: {
         users: isAdmin,

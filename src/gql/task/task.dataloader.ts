@@ -1,6 +1,6 @@
 import DataLoader from "dataloader";
 import { Types } from "mongoose";
-import Task, { TaskDocument } from "../../models/task";
+import Task, { TaskDocument } from "../../models/task.js";
 
 const createTaskLoader = (): DataLoader<Types.ObjectId, TaskDocument | null> =>
   new DataLoader<Types.ObjectId, TaskDocument | null>(async (taskIds: readonly Types.ObjectId[]) => {

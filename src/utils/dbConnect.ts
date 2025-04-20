@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import config from "config";
-import logger from "./logger";
 import dotenv from "dotenv-safe";
+import logger from "./logger.js";
 
 dotenv.config();
 

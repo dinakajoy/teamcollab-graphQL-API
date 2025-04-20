@@ -1,5 +1,5 @@
 import mongoose, { Document, Types } from "mongoose";
-import { roleEnum } from "../interfaces/user.interface";
+import { roleEnum } from "../interfaces/user.interface.js";
 
 export interface UserDocument extends Document {
   _id: Types.ObjectId;

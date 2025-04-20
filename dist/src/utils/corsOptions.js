@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const logger_1 = __importDefault(require("./logger"));
+const logger_js_1 = __importDefault(require("./logger.js"));
 const allowedOrigins = [
     "http://127.0.0.1:5000",
     "http://localhost:5000",
@@ -17,7 +17,7 @@ const corsOptions = {
             callback(null, true);
         }
         else {
-            logger_1.default.warn(`Blocked by CORS: ${origin}`);
+            logger_js_1.default.warn(`Blocked by CORS: ${origin}`);
             callback(new Error("CORS policy: This origin is not allowed"), false);
         }
     },

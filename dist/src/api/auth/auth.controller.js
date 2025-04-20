@@ -4,30 +4,30 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.refreshTokenController = exports.logoutController = exports.loginController = void 0;
-const user_1 = __importDefault(require("../../models/user"));
-const jwtUtils_1 = require("../../utils/jwtUtils");
-const bcryptUtils_1 = require("../../utils/bcryptUtils");
-const logger_1 = __importDefault(require("../../utils/logger"));
-const errors_1 = require("../../utils/errors");
-const user_service_1 = require("../user/user.service");
-const user_interface_1 = require("../../interfaces/user.interface");
+const user_js_1 = __importDefault(require("../../models/user.js"));
+const jwtUtils_js_1 = require("../../utils/jwtUtils.js");
+const bcryptUtils_js_1 = require("../../utils/bcryptUtils.js");
+const logger_js_1 = __importDefault(require("../../utils/logger.js"));
+const errors_js_1 = require("../../utils/errors.js");
+const user_service_js_1 = require("../user/user.service.js");
+const user_interface_js_1 = require("../../interfaces/user.interface.js");
 const loginController = async (res, email, password) => {
     try {
-        const user = await user_1.default.findOne({ email }).lean();
+        const user = await user_js_1.default.findOne({ email }).lean();
         if (!user || !user.password)
             throw new Error("User not found");
-        const validPassword = await (0, bcryptUtils_1.compareStrings)(password, user.password);
+        const validPassword = await (0, bcryptUtils_js_1.compareStrings)(password, user.password);
         if (!validPassword)
             throw new Error("Incorrect password");
         const tokenInfo = {
             _id: user._id,
-            role: user.role || user_interface_1.roleEnum.MEMBER,
+            role: user.role || user_interface_js_1.roleEnum.MEMBER,
         };
-        const accessToken = await (0, jwtUtils_1.signToken)({
+        const accessToken = await (0, jwtUtils_js_1.signToken)({
             tokenInfo,
             isRefreshToken: false,
         });
-        const refreshToken = await (0, jwtUtils_1.signToken)({
+        const refreshToken = await (0, jwtUtils_js_1.signToken)({
             tokenInfo,
             isRefreshToken: true,
         });
@@ -38,8 +38,8 @@ const loginController = async (res, email, password) => {
             sameSite: "none",
             maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
         });
-        const hashedRefreshToken = await (0, bcryptUtils_1.hashString)(refreshToken);
-        await (0, user_service_1.updateUser)({
+        const hashedRefreshToken = await (0, bcryptUtils_js_1.hashString)(refreshToken);
+        await (0, user_service_js_1.updateUser)({
             ...user,
             id: user._id,
             refreshToken: hashedRefreshToken,
@@ -48,8 +48,8 @@ const loginController = async (res, email, password) => {
         return { ...user, token: accessToken };
     }
     catch (error) {
-        logger_1.default.error("loginController - Login error:", error);
-        throw new errors_1.CustomException(500, "Failed to login");
+        logger_js_1.default.error("loginController - Login error:", error);
+        throw new errors_js_1.CustomException(500, "Failed to login");
     }
 };
 exports.loginController = loginController;
@@ -61,12 +61,12 @@ const logoutController = async (res, id) => {
             sameSite: "none",
             secure: true,
         });
-        await user_1.default.findByIdAndUpdate(id, { refreshToken: null });
+        await user_js_1.default.findByIdAndUpdate(id, { refreshToken: null });
         return "Logged out successfully";
     }
     catch (error) {
-        logger_1.default.error("logoutController - Logout error:", error);
-        throw new errors_1.CustomException(500, "Failed to logout");
+        logger_js_1.default.error("logoutController - Logout error:", error);
+        throw new errors_js_1.CustomException(500, "Failed to logout");
     }
 };
 exports.logoutController = logoutController;
@@ -77,8 +77,8 @@ const refreshTokenController = async (req, res) => {
         return;
     }
     try {
-        const decodedToken = await (0, jwtUtils_1.verifyToken)(token);
-        const user = await (0, user_service_1.getUserById)(decodedToken.payload._id);
+        const decodedToken = await (0, jwtUtils_js_1.verifyToken)(token);
+        const user = await (0, user_service_js_1.getUserById)(decodedToken.payload._id);
         if (!user) {
             res.send("User not found");
             return;
@@ -87,7 +87,7 @@ const refreshTokenController = async (req, res) => {
             res.send("Refresh token not found");
             return;
         }
-        const validToken = await (0, bcryptUtils_1.compareStrings)(token, user.refreshToken);
+        const validToken = await (0, bcryptUtils_js_1.compareStrings)(token, user.refreshToken);
         if (!validToken) {
             res.send({ ok: false, accessToken: "" });
             return;
@@ -96,7 +96,7 @@ const refreshTokenController = async (req, res) => {
             _id: user._id,
             role: user.role,
         };
-        const accessToken = await (0, jwtUtils_1.signToken)({
+        const accessToken = await (0, jwtUtils_js_1.signToken)({
             tokenInfo,
             isRefreshToken: false,
         });

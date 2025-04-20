@@ -1,8 +1,8 @@
 import { Types } from "mongoose";
-import Project from "../../models/project";
-import { CustomException } from "../../utils/errors";
-import logger from "../../utils/logger";
-import { IProject } from "../../interfaces/project.interface";
+import Project from "../../models/project.js";
+import { CustomException } from "../../utils/errors.js";
+import logger from "../../utils/logger.js";
+import { IProject } from "../../interfaces/project.interface.js";
 
 export const createProject = async ({
   name,

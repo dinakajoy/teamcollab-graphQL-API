@@ -1,15 +1,15 @@
 import { Types } from "mongoose";
-import { checkRole } from "../../middlewares/auth";
+import { checkRole } from "../../middlewares/auth.js";
 import {
   createTaskController,
   deleteTaskController,
   getTasksController,
   updateTaskController,
-} from "../../api/task/task.controller";
-import { NotFoundUserException } from "../../utils/errors";
-import { roleEnum } from "../../interfaces/user.interface";
-import { MyContext } from "../../interfaces/context";
-import { TaskStatusEnum } from "../../models/task";
+} from "../../api/task/task.controller.js";
+import { NotFoundUserException } from "../../utils/errors.js";
+import { roleEnum } from "../../interfaces/user.interface.js";
+import { MyContext } from "../../interfaces/context.js";
+import { TaskStatusEnum } from "../../models/task.js";
 
 export const taskResolver = {
   Query: {

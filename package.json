@@ -2,12 +2,13 @@
   "name": "teamcollab-api",
   "version": "1.0.0",
   "description": "",
-  "main": "src/server.ts",
+  "main": "dist/src/server.js",
+  "type": "commonjs",
   "scripts": {
-    "compile": "tsc",
-    "generate-schema": "node ./dist/src/gql/generateSchema.js",
+    "generate-schema": "ts-node ./src/gql/generateSchema.ts",
     "generate": "npm run generate-schema && graphql-codegen --config codegen.yml",
-    "build": "npm run compile && npm run generate",
+    "compile": "npm run generate && tsc",
+    "build": "npm run compile",
     "start": "node ./dist/src/server.js"
   },
   "keywords": [

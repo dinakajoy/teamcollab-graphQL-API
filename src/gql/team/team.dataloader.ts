@@ -1,6 +1,6 @@
 import DataLoader from "dataloader";
 import { Types } from "mongoose";
-import Team, { TeamDocument } from "../../models/team";
+import Team, { TeamDocument } from "../../models/team.js";
 
 const createTeamLoader = (): DataLoader<Types.ObjectId, TeamDocument | null> =>
   new DataLoader<Types.ObjectId, TeamDocument | null>(async (teamIds: readonly Types.ObjectId[]) => {

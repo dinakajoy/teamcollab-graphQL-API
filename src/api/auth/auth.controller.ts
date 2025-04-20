@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
 import { Types } from "mongoose";
-import User from "../../models/user";
-import { signToken, verifyToken } from "../../utils/jwtUtils";
-import { compareStrings, hashString } from "../../utils/bcryptUtils";
-import logger from "../../utils/logger";
-import { CustomException } from "../../utils/errors";
-import { getUserById, updateUser } from "../user/user.service";
-import { roleEnum } from "../../interfaces/user.interface";
+import User from "../../models/user.js";
+import { signToken, verifyToken } from "../../utils/jwtUtils.js";
+import { compareStrings, hashString } from "../../utils/bcryptUtils.js";
+import logger from "../../utils/logger.js";
+import { CustomException } from "../../utils/errors.js";
+import { getUserById, updateUser } from "../user/user.service.js";
+import { roleEnum } from "../../interfaces/user.interface.js";
 
 export const loginController = async (
   res: Response,

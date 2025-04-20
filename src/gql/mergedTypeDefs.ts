@@ -1,9 +1,9 @@
 import { mergeTypeDefs } from "@graphql-tools/merge";
-import { userTypeDefs } from "./user/user.typeDef.js";
-import { authTypeDefs } from "./auth/auth.typeDef.js";
-import { teamTypeDefs } from "./team/team.typeDef.js";
-import { projectTypeDefs } from "./project/project.typeDef.js";
-import { taskTypeDefs } from "./task/task.typeDef.js";
+import { userTypeDefs } from "./user/user.typeDef";
+import { authTypeDefs } from "./auth/auth.typeDef";
+import { teamTypeDefs } from "./team/team.typeDef";
+import { projectTypeDefs } from "./project/project.typeDef";
+import { taskTypeDefs } from "./task/task.typeDef";
 
 export default mergeTypeDefs([
   userTypeDefs,

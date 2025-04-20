@@ -1,6 +1,6 @@
 import DataLoader from "dataloader";
 import { Types } from "mongoose";
-import User, { UserDocument } from "../../models/user";
+import User, { UserDocument } from "../../models/user.js";
 
 const createUserLoader = (): DataLoader<Types.ObjectId, UserDocument | null> =>
   new DataLoader<Types.ObjectId, UserDocument | null>(async (userIds: readonly Types.ObjectId[]) => {

@@ -1,6 +1,6 @@
 import DataLoader from "dataloader";
 import { Types } from "mongoose";
-import Project, { ProjectDocument } from "../../models/project";
+import Project, { ProjectDocument } from "../../models/project.js";
 
 const createProjectLoader = (): DataLoader<
   Types.ObjectId,

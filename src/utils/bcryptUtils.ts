@@ -1,7 +1,7 @@
 import config from "config";
 import bcrypt from "bcryptjs";
-import logger from "./logger";
-import { ServerErrorException } from "./errors";
+import logger from "./logger.js";
+import { ServerErrorException } from "./errors.js";
 
 const saltGen = config.get("dbConfig.saltWorkFactor") as number;
 

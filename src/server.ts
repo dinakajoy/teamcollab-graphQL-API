@@ -8,17 +8,17 @@ import { ApolloServer } from "@apollo/server";
 import { expressMiddleware } from "@apollo/server/express4";
 import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
 import { applyMiddleware } from "graphql-middleware";
-import schema from "./schema";
-import { authMiddleware } from "./middlewares/auth";
-import { permissions } from "./middlewares/permissions";
-import { createLoaders } from "./middlewares/dataloader";
-import { setupMonitoring } from "./middlewares/prometheus";
-import { refreshTokenController } from "./api/auth/auth.controller";
-import connectDB from "./utils/dbConnect";
-import limiter from "./utils/rate-limiter";
-import logger from "./utils/logger";
-import corsOptions from "./utils/corsOptions";
-import { MyContext } from "./interfaces/context";
+import schema from "./schema.js";
+import { authMiddleware } from "./middlewares/auth.js";
+import { permissions } from "./middlewares/permissions.js";
+import { createLoaders } from "./middlewares/dataloader.js";
+import { setupMonitoring } from "./middlewares/prometheus.js";
+import { refreshTokenController } from "./api/auth/auth.controller.js";
+import connectDB from "./utils/dbConnect.js";
+import limiter from "./utils/rate-limiter.js";
+import logger from "./utils/logger.js";
+import corsOptions from "./utils/corsOptions.js";
+import { MyContext } from "./interfaces/context.js";
 
 dotenv.config();
 

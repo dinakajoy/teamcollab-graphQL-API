@@ -6,9 +6,9 @@ import {
   getTeamByName,
   updateTeam,
   deleteTeamById,
-} from "./team.service";
-import { CustomException } from "../../utils/errors";
-import logger from "../../utils/logger";
+} from "./team.service.js";
+import { CustomException } from "../../utils/errors.js";
+import logger from "../../utils/logger.js";
 
 export const createTeamController = async (
   name: string,

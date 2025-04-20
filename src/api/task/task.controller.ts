@@ -6,10 +6,10 @@ import {
   getTaskByTitle,
   updateTask,
   deleteTaskById,
-} from "./task.service";
-import { CustomException } from "../../utils/errors";
-import logger from "../../utils/logger";
-import { TaskStatusEnum } from "../../interfaces/task.interface";
+} from "./task.service.js";
+import { CustomException } from "../../utils/errors.js";
+import logger from "../../utils/logger.js";
+import { TaskStatusEnum } from "../../interfaces/task.interface.js";
 
 export const createTaskController = async (
   title: string,
